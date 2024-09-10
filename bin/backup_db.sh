@@ -37,7 +37,7 @@ else
 fi
 
 # Define your backup script's path
-BACKUP_SCRIPT="source/main.py"
+BACKUP_SCRIPT="source/backup.py"
 
 # Check if the backup script exists
 if [ ! -f "$BACKUP_SCRIPT" ]; then
@@ -46,8 +46,7 @@ if [ ! -f "$BACKUP_SCRIPT" ]; then
 fi
 
 # Start DB backup
-"$PYTHON_VERSION" "$BACKUP_SCRIPT"
-if [ $? -eq 0 ]
+if "$PYTHON_VERSION" "$BACKUP_SCRIPT"
 then
     echo "Backup executed successfully."
 else
