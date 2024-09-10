@@ -1,10 +1,13 @@
 #!/bin/bash
 
+# Project directory
+DIR="/home/ubuntu/backup-db"
+
 # Path to the script
-SCRIPT_PATH="/home/ubuntu/backup-db/bin/backup_db.sh"
+SCRIPT_PATH="$DIR/bin/backup_db.sh"
 
 # Path to the log file
-LOGFILE_PATH="/home/ubuntu/backup-db/log/backup_db.log"
+LOGFILE_PATH="$DIR//log/backup_db.log"
 
 # Check if the backup script file exists
 if [ ! -f "$SCRIPT_PATH" ]; then
