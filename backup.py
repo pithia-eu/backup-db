@@ -77,20 +77,37 @@ def download_database_backups(ssh_client, timestamp):
     scp_client.close()
 
 
+
+def backup(timestamp):
+    backup_ssh_host = get_env_variable("BACKUP_SSH_HOST")
+    backup_ssh_port = int(get_env_variable("BACKUP_SSH_PORT"))
+    backup_ssh_user = get_env_variable("BACKUP_SSH_USER")
+    backup_ssh_key_path = get_env_variable("BACKUP_SSH_KEY_PATH")
+    backup_postgres_user = get_env_variable("BACKUP_POSTGRES_USER")
+    backup_dbname = get_env_variable("BACKUP_DBNAME")
+    ssh_client = create_ssh_client(backup_ssh_host,
+                                   backup_ssh_port,
+                                   backup_ssh_user,
+                                   backup_ssh_key_path)
+    create_database_backups(ssh_client,
+                            timestamp,
+                            backup_postgres_user,
+                            backup_dbname)
+    download_database_backups(ssh_client, timestamp)
+    ssh_client.close()
+
+
+def restore():
+    pass
+
+
 def main():
     logging.info('Backup starts')
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     load_dotenv()
-    ssh_host = get_env_variable("SSH_HOST")
-    ssh_port = int(get_env_variable("SSH_PORT"))
-    ssh_user = get_env_variable("SSH_USER")
-    ssh_key_path = get_env_variable("SSH_KEY_PATH")
-    postgres_user = get_env_variable("POSTGRES_USER")
-    dbname = get_env_variable("DBNAME")
-    ssh_client = create_ssh_client(ssh_host, ssh_port, ssh_user, ssh_key_path)
-    create_database_backups(ssh_client, timestamp, postgres_user, dbname)
-    download_database_backups(ssh_client, timestamp)
-    ssh_client.close()
+    backup(timestamp)
+    if get_env_variable("RESTORE"):
+        restore()
     logging.info('Backup completed successfully')
 
 
