@@ -3,27 +3,37 @@
 # The name of the venv
 VENV_NAME=venv
 
-# Store the found Python versions in an array
-mapfile -t VERSIONS < <(/usr/bin/env -i bash -c "compgen -c python" | grep -E '^python[2-3].[0-9]+$' | sort -V)
-
-# Select the latest version
-PYTHON_VERSION=${VERSIONS[-1]}
+# Explicitly select Python version
+PYTHON_VERSION=python3.9
 echo "Python version is: $PYTHON_VERSION"
 
 # Navigate to project directory and exit if it fails
 cd /home/ubuntu/backup-db || exit
 
-# Activate the venv
-source $VENV_NAME/bin/activate
-
-# Check if activation was successful
-if [ $? -eq 0 ]
+# Check if the venv exists
+if [ -d "$VENV_NAME" ]
 then
-  echo "Virtual environment activated successfully."
+    # Activate the venv
+    source $VENV_NAME/bin/activate
+    if type -a $PYTHON_VERSION >/dev/null 2>&1
+    then
+        echo "Virtual environment activated successfully."
+    else
+        echo "The required Python version doesn't exist in the virtual environment. Stop execution."
+        exit
+    fi
 else
-  echo "Failed to activate virtual environment. Stop execution."
-  exit
+    echo "Virtual environment doesn't exist. Stop execution."
+    exit
 fi
 
 # Start DB backup
-"python$PYTHON_VERSION" "source/backup.py"
+"$PYTHON_VERSION" "source/backup.py"
+
+if [ $? -eq 0 ]
+then
+    echo "Backup executed successfully."
+else
+    echo "Failed to execute backup. Stop execution."
+    exit
+fi
