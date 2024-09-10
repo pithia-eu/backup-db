@@ -1,0 +1,6 @@
+SSH_HOST=ssh_host
+SSH_PORT=ssh_port
+SSH_USER=ssh_user
+SSH_KEY_PATH=/path/to/your/private/key
+POSTGRES_USER=postgres_user
+DBNAME=dbname
