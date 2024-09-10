@@ -1,5 +1,4 @@
 #!/bin/bash
-
 # The name of the venv
 VENV_NAME=venv
 
@@ -17,22 +16,25 @@ if [ ! -d "$DIR" ]; then
 fi
 
 # Navigate to project directory
-cd "$DIR" || exit 1
+cd "$DIR"
+if [ $? -ne 0 ]; then
+    echo "Cannot navigate to directory $DIR. Stopping execution."
+    exit 1
+fi
 
 # Check if the venv exists
-if [ -d "$VENV_NAME" ]
-then
+if [ -d "$VENV_NAME" ]; then
     # Activate the venv
     source $VENV_NAME/bin/activate
-    if type -a $PYTHON_VERSION >/dev/null 2>&1
-    then
-        echo "Virtual environment activated successfully."
-    else
-        echo "The required Python version doesn't exist in the virtual environment. Stop execution."
+    # Just to be sure, validate that python is there
+    if ! command -v $PYTHON_VERSION &> /dev/null; then
+        echo "The required Python version doesn't exist in the virtual environment. Stopping execution."
         exit 1
+    else
+        echo "Virtual environment activated successfully."
     fi
 else
-    echo "Virtual environment doesn't exist. Stop execution."
+    echo "Virtual environment doesn't exist. Stopping execution."
     exit 1
 fi
 
@@ -46,10 +48,11 @@ if [ ! -f "$BACKUP_SCRIPT" ]; then
 fi
 
 # Start DB backup
-if "$PYTHON_VERSION" "$BACKUP_SCRIPT"
-then
-    echo "Backup executed successfully."
-else
-    echo "Failed to execute backup. Stop execution."
+$PYTHON_VERSION $BACKUP_SCRIPT
+BACKUP_SCRIPT_EXIT_CODE=$?
+if [ $BACKUP_SCRIPT_EXIT_CODE -ne 0 ]; then
+    echo "Failed to execute backup with exit code $BACKUP_SCRIPT_EXIT_CODE. Stopping execution."
     exit 1
+else
+    echo "Backup executed successfully."
 fi
