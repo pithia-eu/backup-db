@@ -9,3 +9,4 @@ RESTORE_SSH_PORT=restore_ssh_port
 RESTORE_SSH_USER=restore_ssh_user
 RESTORE_POSTGRES_USER=restore_postgres_user
 RESTORE_DBNAME=restore_dbname
+RESTORE=True
