@@ -13,6 +13,21 @@ DIR="/home/ubuntu/backup-db"
 # Requirements file
 REQUIREMENTS=requirements.txt
 
+# Check for prerequisites python3, pip and venv module
+if ! command -v $PYTHON_VERSION &> /dev/null
+then
+    echo "$PYTHON_VERSION could not be found."
+    exit 1
+fi
+$PYTHON_VERSION -m pip --version > /dev/null 2>&1 || {
+    echo "pip for $PYTHON_VERSION could not be found."
+    exit 1
+}
+$PYTHON_VERSION -c "import venv" > /dev/null 2>&1 || {
+    echo "venv module for $PYTHON_VERSION could not be found."
+    exit 1
+}
+
 # Check if the directory exists
 if [ ! -d "$DIR" ]; then
   echo "Directory $DIR does not exist. Stopping execution."
@@ -25,14 +40,13 @@ cd "$DIR" || {
   exit 1
 }
 
-
 # check if requirements file exists
 if [ ! -f "$REQUIREMENTS" ]; then
     echo "Requirements file not found!"
     exit 1
 fi
 
-# create a new venv if it doesn't exist
+# Create a new venv if it doesn't exist
 if [ ! -d "$VENV_NAME" ]; then
     $PYTHON_VERSION -m venv $VENV_NAME
 fi
