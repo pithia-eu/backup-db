@@ -77,7 +77,6 @@ def download_database_backups(ssh_client, timestamp):
     scp_client.close()
 
 
-
 def backup(timestamp):
     backup_ssh_host = get_env_variable("BACKUP_SSH_HOST")
     backup_ssh_port = int(get_env_variable("BACKUP_SSH_PORT"))
