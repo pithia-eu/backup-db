@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# The name of then venv
+# The name of the venv
 VENV_NAME=venv
 
 # Store the found Python versions in an array
@@ -26,4 +26,4 @@ else
 fi
 
 # Start DB backup
-$PYTHON_VERSION source/backup.py
+"python$PYTHON_VERSION" "source/backup.py"
