@@ -7,8 +7,17 @@ VENV_NAME=venv
 PYTHON_VERSION=python3.9
 echo "Python version is: $PYTHON_VERSION"
 
-# Navigate to project directory and exit if it fails
-cd /home/ubuntu/backup-db || exit
+# Define your script's directory
+DIR="/home/ubuntu/backup-db"
+
+# Check if the directory exists
+if [ ! -d "$DIR" ]; then
+  echo "Directory $DIR does not exist. Stopping execution."
+  exit 1
+fi
+
+# Navigate to project directory
+cd "$DIR" || exit 1
 
 # Check if the venv exists
 if [ -d "$VENV_NAME" ]
@@ -20,20 +29,28 @@ then
         echo "Virtual environment activated successfully."
     else
         echo "The required Python version doesn't exist in the virtual environment. Stop execution."
-        exit
+        exit 1
     fi
 else
     echo "Virtual environment doesn't exist. Stop execution."
-    exit
+    exit 1
+fi
+
+# Define your backup script's path
+BACKUP_SCRIPT="source/main.py"
+
+# Check if the backup script exists
+if [ ! -f "$BACKUP_SCRIPT" ]; then
+  echo "Backup script $BACKUP_SCRIPT does not exist. Stopping execution."
+  exit 1
 fi
 
 # Start DB backup
-"$PYTHON_VERSION" "source/backup.py"
-
+"$PYTHON_VERSION" "$BACKUP_SCRIPT"
 if [ $? -eq 0 ]
 then
     echo "Backup executed successfully."
 else
     echo "Failed to execute backup. Stop execution."
-    exit
+    exit 1
 fi
