@@ -1,6 +1,7 @@
 #!/bin/bash
 
-# Set the name of your venv
+# set python version and the name of your venv
+PYTHON_VERSION=3.10
 VENV_NAME=venv
 
 # Navigate to project directory
@@ -18,5 +19,5 @@ else
   exit
 fi
 
-# Start DB back up
-python backup_db.py
+# Start DB backup
+python$PYTHON_VERSION backup.py
