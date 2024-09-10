@@ -6,7 +6,7 @@ from datetime import datetime
 from dotenv import load_dotenv
 
 
-logging.basicConfig(filename='backup.log', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(filename='log/backup.log', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 FILE_PATTERN_ALL = "~/esc_all_system_dbs_{timestamp}.{ext}"
 FILE_PATTERN_DB = "~/esc_db_{timestamp}.{ext}"
@@ -74,7 +74,7 @@ def download_database_backups(ssh_client, timestamp):
     scp_client = scp.SCPClient(ssh_client.get_transport())
     for file in backup_files:
         logging.info(f'Collecting backup file: {file}')
-        scp_client.get(file, local_path='.')
+        scp_client.get(file, local_path='..')
     scp_client.close()
 
 
