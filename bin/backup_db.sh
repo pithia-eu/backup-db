@@ -1,9 +1,10 @@
 #!/bin/bash
+
 # The name of the venv
 VENV_NAME=venv
 
 # Explicitly select Python version
-PYTHON_VERSION=python3.9
+PYTHON_VERSION=python3
 echo "Python version is: $PYTHON_VERSION"
 
 # Define your script's directory
@@ -16,17 +17,16 @@ if [ ! -d "$DIR" ]; then
 fi
 
 # Navigate to project directory
-cd "$DIR"
-if [ $? -ne 0 ]; then
-    echo "Cannot navigate to directory $DIR. Stopping execution."
-    exit 1
-fi
+cd "$DIR" || {
+  echo "Cannot navigate to directory $DIR. Stopping execution."
+  exit 1
+}
 
 # Check if the venv exists
 if [ -d "$VENV_NAME" ]; then
     # Activate the venv
     source $VENV_NAME/bin/activate
-    # Just to be sure, validate that python is there
+    # Validate that python is there
     if ! command -v $PYTHON_VERSION &> /dev/null; then
         echo "The required Python version doesn't exist in the virtual environment. Stopping execution."
         exit 1
