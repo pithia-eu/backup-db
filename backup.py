@@ -1,9 +1,10 @@
 import logging
-import paramiko
+import os
 import scp
+import paramiko
 from datetime import datetime
 from dotenv import load_dotenv
-import os
+
 
 logging.basicConfig(filename='backup.log', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
