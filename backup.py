@@ -5,7 +5,7 @@ from datetime import datetime
 from dotenv import load_dotenv
 import os
 
-logging.basicConfig(filename='app.log', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logging.basicConfig(filename='backup.log', level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 FILE_PATTERN_ALL = "~/esc_all_system_dbs_{timestamp}.{ext}"
 FILE_PATTERN_DB = "~/esc_db_{timestamp}.{ext}"
