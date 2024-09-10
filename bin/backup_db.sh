@@ -1,13 +1,13 @@
 #!/bin/bash
 
-# The name of the venv
+# Name of the venv
 VENV_NAME=venv
 
-# Explicitly select Python version
+# Python version
 PYTHON_VERSION=python3
 echo "Python version is: $PYTHON_VERSION"
 
-# Define your script's directory
+# Project directory
 DIR="/home/ubuntu/backup-db"
 
 # Check if the directory exists
@@ -24,6 +24,10 @@ cd "$DIR" || {
 
 # Check if the venv exists
 if [ -d "$VENV_NAME" ]; then
+    if [ ! -f "$VENV_NAME/bin/activate" ]; then
+        echo "Activation script does not exist within the virtual environment. Stopping execution."
+        exit 1
+    fi
     # Activate the venv
     source $VENV_NAME/bin/activate
     # Validate that python is there
@@ -38,8 +42,8 @@ else
     exit 1
 fi
 
-# Define your backup script's path
-BACKUP_SCRIPT="source/backup.py"
+# Backup script's path
+BACKUP_SCRIPT="$DIR/source/main.py"
 
 # Check if the backup script exists
 if [ ! -f "$BACKUP_SCRIPT" ]; then
