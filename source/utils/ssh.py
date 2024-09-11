@@ -14,7 +14,6 @@ def create_ssh_client(ssh_host, ssh_port, ssh_user, ssh_key_path):
         client.set_missing_host_key_policy(paramiko.WarningPolicy())
         client.connect(ssh_host, port=ssh_port, username=ssh_user, key_filename=ssh_key_path)
         logger.info('SSH client created')
-        logger.debug(f'host:{ssh_host} port:{ssh_port} user:{ssh_user}')
         return client
     except paramiko.AuthenticationException:
         logger.exception("Authentication failed, please verify your credentials.", exc_info=True)
