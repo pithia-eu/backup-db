@@ -1,21 +1,11 @@
-import paramiko
 import scp
 
-from source.log.logger import setup_logger
+from source.log.logger import logger
 from source.utils.environment import get_env_variable
+from source.utils.ssh import create_ssh_client
 
-logger = setup_logger()
 FILE_PATTERN_ALL = "~/esc_all_system_dbs_{timestamp}.{ext}"
 FILE_PATTERN_DB = "~/esc_db_{timestamp}.{ext}"
-
-
-def create_ssh_client(ssh_host, ssh_port, ssh_user, ssh_key_path):
-    client = paramiko.SSHClient()
-    client.load_system_host_keys()
-    client.set_missing_host_key_policy(paramiko.WarningPolicy())
-    client.connect(ssh_host, port=ssh_port, username=ssh_user, key_filename=ssh_key_path)
-    logger.info('SSH Client created')
-    return client
 
 
 def generate_backup_files(timestamp):
