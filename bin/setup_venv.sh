@@ -3,6 +3,9 @@
 # Required to set permissions on remote hosts
 sudo apt install acl
 
+# install if not present
+sudo apt install python3-venv
+
 # Name of the venv
 VENV_NAME=venv
 
