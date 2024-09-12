@@ -53,7 +53,7 @@ if [ ! -f "$BACKUP_SCRIPT" ]; then
   exit 1
 fi
 
-#export PYTHONPATH="${PYTHONPATH}:$DIR/source/"
+export PYTHONPATH="${PYTHONPATH}:$DIR/source/"
 # Start DB backup
 $PYTHON_VERSION source/$BACKUP_SCRIPT
 BACKUP_SCRIPT_EXIT_CODE=$?
