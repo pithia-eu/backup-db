@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Required to set permissions on remote hosts
+sudo apt install acl
+
 # Name of the venv
 VENV_NAME=venv
 
