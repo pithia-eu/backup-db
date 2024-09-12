@@ -45,11 +45,7 @@ else
     exit 1
 fi
 
-# Navigate to source code directory
-cd source || {
-  echo "Cannot navigate to source code directory. Stopping execution."
-  exit 1
-}
+
 
 # Check if the backup script exists
 if [ ! -f "$BACKUP_SCRIPT" ]; then
@@ -57,9 +53,9 @@ if [ ! -f "$BACKUP_SCRIPT" ]; then
   exit 1
 fi
 
-export PYTHONPATH="${PYTHONPATH}:$DIR/source/"
+#export PYTHONPATH="${PYTHONPATH}:$DIR/source/"
 # Start DB backup
-$PYTHON_VERSION $BACKUP_SCRIPT
+$PYTHON_VERSION source/$BACKUP_SCRIPT
 BACKUP_SCRIPT_EXIT_CODE=$?
 if [ $BACKUP_SCRIPT_EXIT_CODE -ne 0 ]; then
     echo "Failed to execute backup with exit code $BACKUP_SCRIPT_EXIT_CODE. Stopping execution."
