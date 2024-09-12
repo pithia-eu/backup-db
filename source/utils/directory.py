@@ -1,8 +1,10 @@
+import os
+
 from source.log.logger import logger
 
 
-def create_directory(ssh_client,
-                     directory):
+def create_ssh_directory(ssh_client,
+                         directory):
     ssh_stdin, ssh_stdout, ssh_stderr = ssh_client.exec_command(f'ls {directory}')
     exit_status = ssh_stdout.channel.recv_exit_status()
     if exit_status != 0:
@@ -14,5 +16,13 @@ def create_directory(ssh_client,
             raise Exception("Encountered error while creating directory:", ssh_stderr.read().decode('utf-8'))
         else:
             logger.debug(f"Directory created: {directory}")
+    else:
+        logger.debug(f"Directory exist: {directory}")
+
+
+def create_local_directory(directory):
+    if not os.path.exists(directory):
+        os.makedirs(directory)
+        logger.debug(f"Directory created: {directory}")
     else:
         logger.debug(f"Directory exist: {directory}")
