@@ -18,14 +18,21 @@ def _setup_logger(log_name=DEFAULT_LOG_NAME,
                   backup_count=DEFAULT_BACKUP_COUNT):
     _logger = logging.getLogger(log_name)
     _logger.setLevel(log_level)
-    c_handler = _create_console_handler(log_format, log_level)
+    c_handler = _create_console_handler(log_format,
+                                        log_level)
     _logger.addHandler(c_handler)
-    f_handler = _create_file_handler(_logger, backup_count, file_path, log_format, log_level, max_bytes)
+    f_handler = _create_file_handler(_logger,
+                                     backup_count,
+                                     file_path,
+                                     log_format,
+                                     log_level,
+                                     max_bytes)
     _logger.addHandler(f_handler)
     return _logger
 
 
-def _create_console_handler(log_format, log_level):
+def _create_console_handler(log_format,
+                            log_level):
     c_handler = logging.StreamHandler()
     c_handler.setLevel(log_level)
     c_formatter = logging.Formatter(log_format)
@@ -33,7 +40,12 @@ def _create_console_handler(log_format, log_level):
     return c_handler
 
 
-def _create_file_handler(_logger, backup_count, file_path, log_format, log_level, max_bytes):
+def _create_file_handler(_logger,
+                         backup_count,
+                         file_path,
+                         log_format,
+                         log_level,
+                         max_bytes):
     directory = os.path.dirname(os.path.abspath(file_path))
     if not os.path.exists(directory):
         _logger.error(f"Directory {directory} does not exist.")
@@ -44,13 +56,17 @@ def _create_file_handler(_logger, backup_count, file_path, log_format, log_level
         _logger.info(f"Program exits with error")
         raise PermissionError(f"Script does not have write access to the directory {directory}.")
     try:
-        f_handler = RotatingFileHandler(file_path, maxBytes=max_bytes, backupCount=backup_count)
+        f_handler = RotatingFileHandler(file_path,
+                                        maxBytes=max_bytes,
+                                        backupCount=backup_count)
     except PermissionError:
-        _logger.exception("There is no write permission to create a log file at this path.", exc_info=True)
+        _logger.exception("There is no write permission to create a log file at this path.",
+                          exc_info=True)
         _logger.info(f"Program exits with error")
         raise
     except FileNotFoundError:
-        _logger.exception("The provided file path does not exist.", exc_info=True)
+        _logger.exception("The provided file path does not exist.",
+                          exc_info=True)
         _logger.info(f"Program exits with error")
         raise
     f_handler.setLevel(log_level)
