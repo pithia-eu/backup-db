@@ -111,6 +111,17 @@ def restore_database_backup(restore_ssh_client,
             raise Exception(f'Reading tables from restored DB failed: {ssh_stderr.read()}')
         else:
             logger.info(f'Reading tables from restored DB completed:\n {ssh_stdout.read().decode()}')
+        logger.info(f'Deleting backup file from host..')
+        backup_file = generate_backup_file_path(timestamp,
+                                                backup_dbname,
+                                                restore_ssh_path)
+        ssh_stdin, ssh_stdout, ssh_stderr = restore_ssh_client.exec_command(f'rm {backup_file}')
+        exit_status = ssh_stdout.channel.recv_exit_status()
+        if exit_status != 0:
+            logger.error(f'Deleting database backup file failed: {ssh_stderr.read()}')
+            raise Exception(f'Deleting database backup file failed: {ssh_stderr.read()}')
+        else:
+            logger.info(f'Backup file Deleted from host')
 
 
 def restore(timestamp,
