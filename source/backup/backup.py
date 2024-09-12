@@ -139,4 +139,3 @@ def backup(timestamp,
                               test)
     backup_ssh_client.close()
     logger.info('Backing up Postgres Server completed')
-
