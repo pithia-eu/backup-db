@@ -49,8 +49,14 @@ def _create_file_handler(_logger,
     directory = os.path.dirname(os.path.abspath(file_path))
     if not os.path.exists(directory):
         _logger.error(f"Directory {directory} does not exist.")
-        _logger.info(f"Program exits with error")
-        raise FileNotFoundError(f"Directory {directory} does not exist.")
+        try:
+            os.makedirs(directory)
+            _logger.info('Directory created')
+        except OSError as e:
+            _logger.exception("Failed to create log directory",
+                              exc_info=True)
+            _logger.info(f"Program exits with error")
+            raise
     if not os.access(directory, os.W_OK):
         _logger.error(f"Script does not have write access to the directory {directory}.")
         _logger.info(f"Program exits with error")
