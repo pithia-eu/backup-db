@@ -37,8 +37,7 @@ echo "Checking if required directories exist"
 for directory in "$DIR" "${SCRIPT_PATH%/*}" "${LOGFILE_PATH%/*}"; do
   if [ ! -d "$directory" ]; then
     echo "$directory does not exist. Creating now..."
-    mkdir -p "$directory"
-    if [ $? -ne 0 ]; then
+    if ! mkdir -p "$directory"; then
       echo "Failed to create directory $directory." >&2
       exit 1
     fi
@@ -54,8 +53,7 @@ fi
 
 # Always set the backup script as executable
 echo "Checking if the backup script at $SCRIPT_PATH is executable"
-chmod +x "$SCRIPT_PATH"
-if [ $? -ne 0 ]; then
+if ! chmod +x "$SCRIPT_PATH"; then
   echo "Failed to set backup script as executable." >&2
   exit 1
 fi
@@ -64,8 +62,7 @@ fi
 echo "Checking if the the log file exist"
 if [ ! -f "$LOGFILE_PATH" ]; then
   echo "Log file not found at $LOGFILE_PATH, creating now..."
-  touch "$LOGFILE_PATH"
-  if [ $? -ne 0 ]; then
+  if ! touch "$LOGFILE_PATH"; then
     echo "Failed to create log file." >&2
     exit 1
   fi
@@ -73,8 +70,7 @@ fi
 
 # Always set the log file as writable
 echo "Checking if the log file at $LOGFILE_PATH is writable"
-chmod +w "$LOGFILE_PATH"
-if [ $? -ne 0 ]; then
+if ! chmod +w "$LOGFILE_PATH"; then
   echo "Failed to set log file as writable." >&2
   exit 1
 fi
@@ -85,8 +81,7 @@ croncmd="$SCRIPT_PATH >> $LOGFILE_PATH 2>&1"
 cronjob="0 0 * * * $croncmd"
 if ! (crontab -l 2>/dev/null | grep -Fq "$croncmd"); then
   echo "Adding cron job"
-  (crontab -l 2>/dev/null ; echo "$cronjob") | crontab -
-  if [ $? -ne 0 ]; then
+  if ! (crontab -l 2>/dev/null ; echo "$cronjob") | crontab -; then
     echo "Failed to add a cron job." >&2
     exit 1
   fi
