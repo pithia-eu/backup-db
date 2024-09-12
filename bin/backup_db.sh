@@ -23,8 +23,8 @@ cd "$DIR" || {
 }
 
 # Check if the venv exists
-if [ -d "$DIR$/VENV_NAME" ]; then
-    if [ ! -f "$DIR$/VENV_NAME/bin/activate" ]; then
+if [ -d "$DIR/$VENV_NAME" ]; then
+    if [ ! -f "$DIR/$VENV_NAME/bin/activate" ]; then
         echo "Activation script does not exist within the virtual environment. Stopping execution."
         exit 1
     fi
