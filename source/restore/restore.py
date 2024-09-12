@@ -3,7 +3,7 @@ from source.log.logger import logger
 from source.utils.environment import get_env_variable
 from source.utils.ssh import create_ssh_client
 from source.utils.directory import (create_ssh_directory)
-from source.utils.permissions import change_permissions
+from source.utils.permissions import change_ssh_directory_permissions
 
 BACKUP_FILE_PATTERN_DB = "{backup_to_path}/{backup_dbname}_db_{timestamp}.{ext}"
 
@@ -40,9 +40,9 @@ def upload_database_backups(restore_ssh_client,
         logger.info('Uploading database backups to backup host')
     create_ssh_directory(restore_ssh_client,
                          restore_ssh_path)
-    change_permissions(restore_ssh_client,
-                       restore_postgres_user,
-                       restore_ssh_path)
+    change_ssh_directory_permissions(restore_ssh_client,
+                                     restore_postgres_user,
+                                     restore_ssh_path)
     backup_file = generate_backup_file_path(timestamp,
                                             backup_dbname,
                                             backup_to_path)
