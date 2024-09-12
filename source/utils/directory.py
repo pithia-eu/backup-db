@@ -27,15 +27,9 @@ def create_local_directory(directory):
         try:
             os.makedirs(directory, mode=0o777)
             logger.debug(f"Directory created: {directory}")
-        except PermissionError:
-            logger.debug(f"Permission denied when trying to create directory: {directory}")
-            current_user = os.getlogin()
-            uid = pwd.getpwnam(current_user).pw_uid
-            gid = grp.getgrnam(current_user).gr_gid
-            parent_dir = os.path.dirname(directory)
-            os.chown(parent_dir, uid, gid)
-            os.chmod(parent_dir, 0o777)
-            os.makedirs(directory, mode=0o777)
-            logger.debug("Directory created  after changing permissions")
+        except PermissionError as e:
+            logger.exception(f"Permission denied when trying to create directory: {directory}",
+                             exc_info=True)
+            raise
     else:
         logger.debug(f"Directory exists: {directory}")
