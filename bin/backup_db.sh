@@ -10,6 +10,9 @@ echo "Python version is: $PYTHON_VERSION"
 # Project directory
 DIR="/home/ubuntu/backup-db"
 
+# Backup script's path
+BACKUP_SCRIPT="main.py"
+
 # Check if the directory exists
 if [ ! -d "$DIR" ]; then
   echo "Directory $DIR does not exist. Stopping execution."
@@ -42,8 +45,11 @@ else
     exit 1
 fi
 
-# Backup script's path
-BACKUP_SCRIPT="$DIR/source/main.py"
+# Navigate to source code directory
+cd source || {
+  echo "Cannot navigate to source code directory. Stopping execution."
+  exit 1
+}
 
 # Check if the backup script exists
 if [ ! -f "$BACKUP_SCRIPT" ]; then
