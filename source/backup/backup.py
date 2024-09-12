@@ -4,7 +4,8 @@ from source.utils.environment import get_env_variable
 from source.utils.ssh import create_ssh_client
 from source.utils.directory import (create_ssh_directory,
                                     create_local_directory)
-from source.utils.permissions import change_permissions
+from source.utils.permissions import (change_ssh_directory_permissions,
+                                      change_local_directory_permission)
 
 BACKUP_FILE_PATTERN_ALL = "{backup_ssh_path}/{backup_dbname}_all_system_dbs_{timestamp}.{ext}"
 BACKUP_FILE_PATTERN_DB = "{backup_ssh_path}/{backup_dbname}_db_{timestamp}.{ext}"
@@ -73,9 +74,9 @@ def create_database_backups(backup_ssh_client,
         logger.info('Creating database backups')
     create_ssh_directory(backup_ssh_client,
                          backup_ssh_path)
-    change_permissions(backup_ssh_client,
-                       backup_postgres_user,
-                       backup_ssh_path)
+    change_ssh_directory_permissions(backup_ssh_client,
+                                     backup_postgres_user,
+                                     backup_ssh_path)
     commands = generate_backup_commands(timestamp,
                                         backup_postgres_user,
                                         backup_dbname,
@@ -104,6 +105,7 @@ def download_database_backups(backup_ssh_client,
     else:
         logger.info('Collecting database backups')
     create_local_directory(backup_to_path)
+    change_local_directory_permission(backup_to_path)
     backup_files = generate_backup_file_paths(timestamp,
                                               backup_dbname,
                                               backup_ssh_path)
