@@ -20,12 +20,15 @@ def main():
     load_dotenv()
     backup(timestamp,
            test)
-    if get_env_variable("RESTORE"):
-        restore(test)
+    if get_env_variable("RESTORE") == "True":
+        restore(timestamp,
+                test)
+    else:
+        logger.info("Restoring Postgres Server is disabled")
     if args.test:
         logger.warning("Test run completed. No backups created")
     else:
-        logger.info('Backup process  completed successfully')
+        logger.info('Backup process completed successfully')
 
 
 if __name__ == '__main__':
