@@ -23,13 +23,13 @@ cd "$DIR" || {
 }
 
 # Check if the venv exists
-if [ -d "$DIR/$VENV_NAME" ]; then
-    if [ ! -f "$DIR/$VENV_NAME/bin/activate" ]; then
+if [ -d "$VENV_NAME" ]; then
+    if [ ! -f "$VENV_NAME/bin/activate" ]; then
         echo "Activation script does not exist within the virtual environment. Stopping execution."
         exit 1
     fi
     # Activate the venv
-    source $DIR/$VENV_NAME/bin/activate
+    source $VENV_NAME/bin/activate
     # Validate that python is there
     if ! command -v $PYTHON_VERSION &> /dev/null; then
         echo "The required Python version doesn't exist in the virtual environment. Stopping execution."
