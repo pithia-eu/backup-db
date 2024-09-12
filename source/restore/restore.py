@@ -37,7 +37,7 @@ def upload_database_backups(restore_ssh_client,
     if test:
         logger.warning('Test model enabled - uploading backup files disabled')
     else:
-        logger.info('Uploading database backups to backup host')
+        logger.info('Uploading database backups to restore host')
     create_ssh_directory(restore_ssh_client,
                          restore_ssh_path)
     change_ssh_directory_permissions(restore_ssh_client,
