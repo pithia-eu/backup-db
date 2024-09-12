@@ -53,9 +53,8 @@ if [ ! -f "$BACKUP_SCRIPT" ]; then
   exit 1
 fi
 
-export PYTHONPATH="${PYTHONPATH}:$DIR/source/"
 # Start DB backup
-$PYTHON_VERSION source/$BACKUP_SCRIPT
+$PYTHON_VERSION $BACKUP_SCRIPT
 BACKUP_SCRIPT_EXIT_CODE=$?
 if [ $BACKUP_SCRIPT_EXIT_CODE -ne 0 ]; then
     echo "Failed to execute backup with exit code $BACKUP_SCRIPT_EXIT_CODE. Stopping execution."
