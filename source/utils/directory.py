@@ -1,4 +1,6 @@
 import os
+import pwd
+import grp
 
 from source.log.logger import logger
 
@@ -22,11 +24,18 @@ def create_ssh_directory(ssh_client,
 
 def create_local_directory(directory):
     if not os.path.exists(directory):
-        old_mask = os.umask(0o000)
         try:
             os.makedirs(directory, mode=0o777)
-        finally:
-            os.umask(old_mask)
-        logger.debug(f"Directory created: {directory}")
+            logger.debug(f"Directory created: {directory}")
+        except PermissionError:
+            logger.debug(f"Permission denied when trying to create directory: {directory}")
+            current_user = os.getlogin()
+            uid = pwd.getpwnam(current_user).pw_uid
+            gid = grp.getgrnam(current_user).gr_gid
+            parent_dir = os.path.dirname(directory)
+            os.chown(parent_dir, uid, gid)
+            os.chmod(parent_dir, 0o777)
+            os.makedirs(directory, mode=0o777)
+            logger.debug("Directory created  after changing permissions")
     else:
-        logger.debug(f"Directory exist: {directory}")
+        logger.debug(f"Directory exists: {directory}")
