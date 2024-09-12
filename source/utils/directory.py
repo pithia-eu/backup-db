@@ -22,7 +22,11 @@ def create_ssh_directory(ssh_client,
 
 def create_local_directory(directory):
     if not os.path.exists(directory):
-        os.makedirs(directory)
+        old_mask = os.umask(0o000)
+        try:
+            os.makedirs(directory, mode=0o777)
+        finally:
+            os.umask(old_mask)
         logger.debug(f"Directory created: {directory}")
     else:
         logger.debug(f"Directory exist: {directory}")
