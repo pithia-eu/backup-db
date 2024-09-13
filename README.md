@@ -1,6 +1,6 @@
 # backup-db
 
-# Database Backup and Restore: Project Documentation
+## PostgreSQL Database Backup and Restore Python projeect
 
 ## Introduction
 
