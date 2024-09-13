@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# Required to set permissions on remote hosts
+# Required to set permissions on this hosts
 sudo apt install acl
 
 # install if not present
