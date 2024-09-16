@@ -87,4 +87,4 @@ if ! (crontab -l 2>/dev/null | grep -Fq "$croncmd"); then
   fi
 fi
 
-echo "Backuo cron job setup completed"
+echo "Backup cron job setup completed"
